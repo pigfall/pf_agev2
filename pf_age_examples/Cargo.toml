@@ -1,13 +1,13 @@
 [package]
-name = "pf_age_macro"
+name = "pf_age_examples"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lib]
-proc-macro=true
-
 [dependencies]
-syn = { version = "1.0.60", features = ["full"] }
-quote="1.0.8"
+pf_age_macro = {path = "../pf_age_macro"}
+
+[[example]]
+name="simple_output"
+crate-type=["cdylib"]
