@@ -21,11 +21,13 @@ pub fn pf_age_main(attr: TokenStream,input: TokenStream)->TokenStream{
             //pf_age_entry::init_android_logger("pf_age_logger");
             //info!(" ANativeActivity_onCreating");
             // }
+            let entry = #build_app();
+            if let Some(engine) = entry.custome_game_entry{
+                engine.android_activity_on_create();
+            }else{
+                engine::android_activity_on_create(entry.app);
+            }
         }
-        fn main(){
-
-        }
-
     };
 
     return output_tks.into();
