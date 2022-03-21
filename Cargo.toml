@@ -1,4 +1,5 @@
 [workspace]
 members =[
-  "pf_age_app"
+  "pf_age_app",
+  "pf_age_macro"
 ]
