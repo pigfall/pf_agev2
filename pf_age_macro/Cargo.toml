@@ -11,3 +11,4 @@ proc-macro=true
 [dependencies]
 syn = { version = "1.0.60", features = ["full"] }
 quote="1.0.8"
+pf_age_third_party = {path="../pf_age_third_party"}

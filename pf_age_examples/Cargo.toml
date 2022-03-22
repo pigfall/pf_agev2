@@ -7,6 +7,12 @@ edition = "2021"
 
 [dependencies]
 pf_age_macro = {path = "../pf_age_macro"}
+pf_age_app = {path= "../pf_age_app"}
+
+[package.metadata.android]
+# Specifies the array of targets to build for.
+build_targets = [  "aarch64-linux-android", "x86_64-linux-android","i686-linux-android" ]
+
 
 [[example]]
 name="simple_output"

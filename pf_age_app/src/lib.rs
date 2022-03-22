@@ -1,14 +1,9 @@
 pub mod app;
 pub mod scene;
-pub mod main_entry_macro;
 
 pub use app::App;
+pub use pf_age_third_party::log::info;
 
-pub struct AppToRun<GameEntry: GameEntryTrait>{
-    custome_game_entry: Option<GameEntry>,
-    app: App,
-}
+#[cfg(target_os="android")]
+pub mod android;
 
-pub trait GameEntryTrait {
-    fn android_activity_on_create();
-}
