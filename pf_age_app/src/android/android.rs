@@ -7,6 +7,7 @@ use pf_age_third_party::log::{info};
 use pf_age_ndk::{ANativeActivity};
 use std::ptr::NonNull;
 use std::os::raw::c_void;
+use std::thread;
 
 
 use super::android_native_activity_callback::{
@@ -29,6 +30,12 @@ pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,save
     callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
 
     game_looper =Box::into_raw(Box::new(GameLooper{}));
+
+    
+    // TODO run game loop in new thread
+    thread::spawn(||{
+        (*game_looper).loop_run();
+    });
 }
 
 pub fn init_android_logger(tag: &str){
