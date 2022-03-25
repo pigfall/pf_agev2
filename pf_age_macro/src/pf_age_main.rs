@@ -20,8 +20,8 @@ pub fn pf_age_main(attr: TokenStream,input: TokenStream)->TokenStream{
             saved_state_raw_ptr: *mut c_void,
             saved_state_size: usize,
             ){
-            pf_age_app::android::init_android_logger("pf_age");
-            pf_age_app::android::log::info!("activity on create");
+            //pf_age_app::android::init_android_logger("pf_age");
+            //pf_age_app::android::log::info!("activity on create");
             pf_age_app::android::android_platform_entry(activity_raw_ptr as *mut _,saved_state_raw_ptr,saved_state_size,#main_fn_name);
             //}
         }

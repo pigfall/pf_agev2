@@ -1,11 +1,34 @@
+use crate::android::android_game_looper::GameLooper;
+use crate::android::android_global_game_looper::game_looper;
 use crate::app::App;
-pub use pf_age_third_party::android_logger;
-pub use pf_age_third_party::log;
-pub use pf_age_third_party::log::{info};
+use pf_age_third_party::android_logger;
+use pf_age_third_party::log;
+use pf_age_third_party::log::{info};
+use pf_age_ndk::{ANativeActivity};
+use std::ptr::NonNull;
 use std::os::raw::c_void;
 
-pub fn android_platform_entry(activity: *mut c_void,saved_state: *mut c_void,saved_size: usize,build_app:fn()->App){
-    info!("⌛ register native activity callback")
+
+use super::android_native_activity_callback::{
+    on_native_window_created,
+    on_native_window_destroyed,
+    on_input_queue_created,
+    on_input_queue_destroyed,
+};
+use super::android_global_game_looper;
+
+pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,saved_state: *mut c_void,saved_size: usize,build_app:fn()->App){
+    init_android_logger("pf_age");
+    info!("⌛ register native activity callback");
+    let mut activity_ptr = NonNull::new(activity_raw_ptr).expect("activity_raw_ptr is nil");
+    let  callbacks = activity_ptr.as_mut().callbacks.as_mut().expect("activity callback is nil");
+    callbacks.onNativeWindowCreated  = Some(on_native_window_created);
+    callbacks.onNativeWindowDestroyed = Some(on_native_window_destroyed);
+    //callbacks.onWindowFocusChanged =Some(on_native_window_focus_changed);
+    callbacks.onInputQueueCreated = Some(on_input_queue_created);
+    callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
+
+    game_looper =Box::into_raw(Box::new(GameLooper{}));
 }
 
 pub fn init_android_logger(tag: &str){
@@ -14,17 +37,4 @@ pub fn init_android_logger(tag: &str){
         with_min_level(log::Level::Trace). // NOTE: must need min level
         with_tag(tag),
         );
-}
-
-struct GameLooper{
-
-}
-
-impl GameLooper {
-    fn loop_run(&self){
-        loop{
-            pre_handle_android_activitiy_evs();
-            app.one_frame()
-        }
-    }
 }
