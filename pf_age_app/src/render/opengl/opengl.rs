@@ -17,6 +17,6 @@ impl RenderTrait for GLRender{
          info!("TODO opengl on_window_create");
      }
     fn on_window_destroy(&mut self, window_ptr: *mut c_void){
-         todo!("TODO opengl on window destroy");
+         info!("TODO opengl on window destroy");
     }
 }

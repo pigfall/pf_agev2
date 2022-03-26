@@ -1,6 +1,6 @@
 
 pub use android_logger;
 pub use log;
-pub use shrev::{EventChannel};
+pub use shrev::{EventChannel,ReaderId};
 
 

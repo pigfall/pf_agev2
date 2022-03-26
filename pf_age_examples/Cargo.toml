@@ -11,7 +11,8 @@ pf_age_app = {path= "../pf_age_app"}
 
 [package.metadata.android]
 # Specifies the array of targets to build for.
-build_targets = [  "aarch64-linux-android", "x86_64-linux-android","i686-linux-android" ]
+#build_targets = [  "aarch64-linux-android", "x86_64-linux-android","i686-linux-android" ]
+build_targets = [  "i686-linux-android" ]
 
 
 [[example]]

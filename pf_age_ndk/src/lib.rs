@@ -5,3 +5,5 @@ pub use ndk_sys::{
     AInputQueue_getEvent,
     AInputQueue_finishEvent,
 };
+
+pub use ndk::event::InputEvent;
