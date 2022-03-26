@@ -30,7 +30,11 @@ pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,save
     callbacks.onInputQueueCreated = Some(on_input_queue_created);
     callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
 
-    game_looper =Box::into_raw(Box::new(GameLooper::new(GLRender::new())));
+    game_looper =Box::into_raw(
+        Box::new(
+            GameLooper::new(build_app(),GLRender::new())
+        )
+    );
 
    //  let mut logpipe: [RawFd; 2] = Default::default();
    // libc::pipe(logpipe.as_mut_ptr());

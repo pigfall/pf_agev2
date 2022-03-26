@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 pf_age_macro = {path = "../pf_age_macro"}
 pf_age_app = {path= "../pf_age_app"}
+pf_age_third_party = {path="../pf_age_third_party"}
 
 [package.metadata.android]
 # Specifies the array of targets to build for.

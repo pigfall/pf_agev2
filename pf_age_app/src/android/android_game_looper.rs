@@ -1,7 +1,7 @@
 use pf_age_ndk::{ANativeWindow, AInputQueue,AInputQueue_getEvent,AInputQueue_finishEvent,InputEvent};
 use pf_age_third_party::log::info;
 use std::{sync::{Arc, Mutex,Condvar}, collections::VecDeque, ptr::NonNull};
-use crate::{events::{Event,AndroidActivityEvent, AndroidInputWrapper, ANativeWindowWrapper, AInputQueueWrapper}, render};
+use crate::{events::{Event,AndroidActivityEvent, AndroidInputWrapper, ANativeWindowWrapper, AInputQueueWrapper}, render, App};
 use crate::render::{RenderTrait,GLRender};
 use pf_age_third_party::{EventChannel,ReaderId};
 
@@ -14,10 +14,11 @@ pub struct GameLooper<Render:RenderTrait>{
     input_queue:*mut AInputQueue,
     game_ev_channel: *mut EventChannel<Event>,
     game_ev_reader: ReaderId<Event>,
+    app:App,
 }
 
 impl<Render:RenderTrait> GameLooper<Render> {
-    pub fn new(render:Render)->GameLooper<Render>{
+    pub fn new(app:App,render:Render)->GameLooper<Render>{
         let mut game_ev_channel = Box::new(EventChannel::with_capacity(100));
         let mut game_ev_reader = game_ev_channel.register_reader();
         return GameLooper { 
@@ -29,6 +30,7 @@ impl<Render:RenderTrait> GameLooper<Render> {
              input_queue:std::ptr::null_mut(),
              game_ev_channel: Box::into_raw(game_ev_channel),
              game_ev_reader:game_ev_reader,
+             app   :app,
             }
     }
 
@@ -38,12 +40,13 @@ impl<Render:RenderTrait> GameLooper<Render> {
             self.pre_handle_android_activitiy_evs();
             // poll input events;
              self.poll_input_events();
-            //app.one_frame()
-            unsafe{
-                for ev in (*self.game_ev_channel).read(&mut self.game_ev_reader){
-                    info!("read from game ev channel {:?}",ev);
-                }
-            }
+             // TODO dt time
+            self.app.one_frame(1.0);
+            //unsafe{
+            //    for ev in (*self.game_ev_channel).read(&mut self.game_ev_reader){
+            //        info!("read from game ev channel {:?}",ev);
+            //    }
+            //}
         }
     }
 

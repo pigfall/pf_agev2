@@ -3,27 +3,20 @@ use std::collections::HashMap;
 
 pub struct App {
     scenes: HashMap<String,Scene>,
-    entry_scene_id: String,
+    cur_scene:Scene,
 }
 
 
 
 impl App{
-    pub fn new()->Self{
+    pub fn new(entry_scene:Scene)->Self{
         return Self{
             scenes: HashMap::new(),
-            entry_scene_id:String::from(""),
+            cur_scene:entry_scene,
         }
     }
-    pub fn register_scene(&mut self,id: String,scene:Scene)->&Self{
-        if self.scenes.contains_key(&id){
-            panic!("sceneId {:?} has been used",id);
-        }
-        self.scenes.insert(id,scene);
-        return self;
-    }
-    fn entry_scene(&mut self, id: String)->&Self{
-        self.entry_scene_id = id;
-        return self;
+
+    pub fn one_frame(&mut self, dt:f64){
+        self.cur_scene.one_frame(dt);
     }
 }
