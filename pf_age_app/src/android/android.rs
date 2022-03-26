@@ -8,6 +8,7 @@ use pf_age_ndk::{ANativeActivity};
 use std::ptr::NonNull;
 use std::os::raw::c_void;
 use std::thread;
+use crate::render::GLRender;
 
 
 use super::android_native_activity_callback::{
@@ -29,7 +30,7 @@ pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,save
     callbacks.onInputQueueCreated = Some(on_input_queue_created);
     callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
 
-    game_looper =Box::into_raw(Box::new(GameLooper::new()));
+    game_looper =Box::into_raw(Box::new(GameLooper::new(GLRender::new())));
 
    //  let mut logpipe: [RawFd; 2] = Default::default();
    // libc::pipe(logpipe.as_mut_ptr());
