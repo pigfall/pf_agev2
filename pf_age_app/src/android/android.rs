@@ -3,7 +3,7 @@ use crate::android::android_global_game_looper::game_looper;
 use crate::app::App;
 use pf_age_third_party::android_logger;
 use pf_age_third_party::log;
-use pf_age_third_party::log::{info};
+use pf_age_third_party::log::{info,error};
 use pf_age_ndk::{ANativeActivity};
 use std::ptr::NonNull;
 use std::os::raw::c_void;
@@ -29,8 +29,23 @@ pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,save
     callbacks.onInputQueueCreated = Some(on_input_queue_created);
     callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
 
-    game_looper =Box::into_raw(Box::new(GameLooper{}));
+    game_looper =Box::into_raw(Box::new(GameLooper::new()));
 
+   //  let mut logpipe: [RawFd; 2] = Default::default();
+   // libc::pipe(logpipe.as_mut_ptr());
+   //   libc::dup2(logpipe[1], libc::STDOUT_FILENO);
+   //   libc::dup2(logpipe[1], libc::STDERR_FILENO);
+   //   thread::spawn(move || {                                                                                                     // let tag = CStr::from_bytes_with_nul(b"pf_age_logger\0").unwrap();                                                                                                                                                                            let file = File::from_raw_fd(logpipe[0]);                                                                               let mut reader = BufReader::new(file); ‣BufReader<{unknown}>
+   //       let mut buffer = String::new(); ‣String                                                                                 loop {                                                                                                                      buffer.clear();                                                                                                         if let Ok(len) = reader.read_line(&mut buffer) { ‣usize
+   //               if len == 0 {
+   //                   break;
+   //               } else if let Ok(msg) = CString::new(buffer.clone()) { ‣CString
+   //                   error!("{:?}",msg);
+   //                   // android_logger(Level::Info, tag, &msg);
+   //               }
+   //           }
+   //       }
+   //   });
     
     // TODO run game loop in new thread
     thread::spawn(||{
