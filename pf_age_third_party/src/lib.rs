@@ -5,6 +5,7 @@ pub use shrev::{EventChannel,ReaderId};
 pub use egl;
 pub use libc;
 pub use glow;
+pub use legion;
 
 
 

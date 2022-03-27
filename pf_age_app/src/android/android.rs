@@ -26,7 +26,7 @@ pub unsafe fn android_platform_entry(
     activity_raw_ptr: *mut ANativeActivity,
     saved_state: *mut c_void,
     saved_size: usize,
-    build_app: fn() -> App<GLRender>,
+    build_app: fn() -> App,
 ) {
     init_android_logger("pf_age");
     info!("⌛ register native activity callback");
