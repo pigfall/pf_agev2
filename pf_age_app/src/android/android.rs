@@ -19,7 +19,7 @@ use super::android_native_activity_callback::{
 };
 use super::android_global_game_looper;
 
-pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,saved_state: *mut c_void,saved_size: usize,build_app:fn()->App){
+pub unsafe fn android_platform_entry(activity_raw_ptr: *mut ANativeActivity,saved_state: *mut c_void,saved_size: usize,build_app:fn()->App<GLRender>){
     init_android_logger("pf_age");
     info!("⌛ register native activity callback");
     let mut activity_ptr = NonNull::new(activity_raw_ptr).expect("activity_raw_ptr is nil");
