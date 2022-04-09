@@ -82,18 +82,6 @@ pub unsafe fn android_main_bevy(
 ) {
     init_android_logger("pf_age");
     info!("⌛ register native activity callback");
-    let mut activity_ptr = NonNull::new(activity_raw_ptr).expect("activity_raw_ptr is nil");
-    let callbacks = activity_ptr
-        .as_mut()
-        .callbacks
-        .as_mut()
-        .expect("activity callback is nil");
-    callbacks.onNativeWindowCreated = Some(on_native_window_created);
-    callbacks.onNativeWindowDestroyed = Some(on_native_window_destroyed);
-    //callbacks.onWindowFocusChanged =Some(on_native_window_focus_changed);
-    callbacks.onInputQueueCreated = Some(on_input_queue_created);
-    callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
-
 
     let mut logpipe: [RawFd; 2] = Default::default();
     libc::pipe(logpipe.as_mut_ptr());
