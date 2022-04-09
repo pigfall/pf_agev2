@@ -120,6 +120,7 @@ pub unsafe fn android_main_bevy(
 
     // TODO run game loop in new thread
     thread::spawn(move || {
+        info!("entrying");
         entry()
     });
 }
