@@ -5,11 +5,13 @@ use pf_age_third_party::glow;
 use pf_age_third_party::log::info;
 use std::os::raw::c_void;
 use std::ptr::NonNull;
+use std::any::Any;
 
 pub struct GLRender {
     egl_inited: bool,
     pub egl_wrapper: Option<EglWrapper>,
     pub gl_fn_wrapper: Option<GLFnsWrapper>,
+    pub surface: Option<egl::Surface>,
 }
 
 pub struct GLFnsWrapper {
@@ -20,16 +22,10 @@ pub struct EglWrapper {
     pub display: egl::Display,
     pub config: egl::Config,
     pub ctx: egl::Context,
-    pub surface: Option<egl::Surface>,
 }
 
 
 impl EglWrapper {
-    pub fn swap_buffer(&mut self){
-        if let Some(surface) = self.surface{
-            self.egl_ins.swap_buffers(self.display, surface).unwrap();
-        }
-    }
     fn attach_ctx_to_surface(&self, surface: egl::Surface) {
         info!("⌛ Attach an EGL rendering context to EGL surfaces");
         let egl_ins = &self.egl_ins;
@@ -68,6 +64,7 @@ impl GLRender {
             egl_inited: false,
             egl_wrapper: None,
             gl_fn_wrapper: None,
+            surface:None,
         }
     }
 }
@@ -155,7 +152,6 @@ impl GLRender {
             ctx: ctx,
             config: config,
             egl_ins: egl_ins,
-            surface: None,
         });
 
         self.egl_inited = true;
@@ -163,6 +159,9 @@ impl GLRender {
 }
 
 impl RenderTrait for GLRender {
+    fn as_any(&mut self)->&mut dyn Any{
+        return self;
+    }
     fn on_window_create(&mut self, window_ptr: *mut c_void) {
         if !self.egl_inited {
             self.init_egl();
@@ -171,7 +170,7 @@ impl RenderTrait for GLRender {
         let egl_wrapper = self.egl_wrapper.as_mut().expect("inited egl");
         let surface = egl_wrapper.create_surface(window_ptr as _);
         egl_wrapper.attach_ctx_to_surface(surface);
-        egl_wrapper.surface = Some(surface);
+        self.surface = Some(surface);
 
         if self.gl_fn_wrapper.is_none() {
             let gl_fns = unsafe {
@@ -204,9 +203,9 @@ impl RenderTrait for GLRender {
     fn on_window_destroy(&mut self, window_ptr: *mut c_void) {
         info!("TODO opengl on window destroy");
         if let Some(egl_wrapper) = &mut self.egl_wrapper{
-            if let Some(surface) = egl_wrapper.surface{
+            if let Some(surface) = self.surface{
                 egl_wrapper.egl_ins.destroy_surface(egl_wrapper.display, surface).expect("failed to destroy surface");
-                egl_wrapper.surface = None;
+                self.surface = None;
                 info!("✅ destroy egl surface ");
             }
         }

@@ -1,3 +1,8 @@
+[package]
+name= "pf_age"
+version = "0.1.0"
+edition="2021"
+
 [workspace]
 members =[
   "pf_age_app",
@@ -6,3 +11,19 @@ members =[
   "pf_age_third_party",
   "pf_age_ndk"
 ]
+
+[package.metadata.android]
+# Specifies the array of targets to build for.
+#build_targets = [  "aarch64-linux-android", "x86_64-linux-android","i686-linux-android" ]
+build_targets = ["i686-linux-android"]
+
+[dev-dependencies]
+bevy ={path="../clones/bevy"}
+pf_age_app ={path="./pf_age_app"}
+pf_age_macro ={path="./pf_age_macro"}
+
+[[example]]
+name="pf_age_bevy"
+crate-type=["cdylib"]
+
+

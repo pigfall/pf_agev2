@@ -14,11 +14,11 @@ pub struct GameLooper<Render:RenderTrait>{
     input_queue:*mut AInputQueue,
     game_ev_channel: *mut EventChannel<Event>,
     game_ev_reader: ReaderId<Event>,
-    app:App<Render>,
+    app:App,
 }
 
 impl<Render:RenderTrait> GameLooper<Render> {
-    pub fn new(app:App<Render>,render:Render)->GameLooper<Render>{
+    pub fn new(app:App,render:Render)->GameLooper<Render>{
         let mut game_ev_channel = Box::new(EventChannel::with_capacity(100));
         let mut game_ev_reader = game_ev_channel.register_reader();
         return GameLooper { 
