@@ -1,5 +1,6 @@
 use crate::android::android_game_looper::GameLooper;
 use crate::android::android_global_game_looper::game_looper;
+use crate::android::global_android_native_activity;
 use crate::app::App;
 use crate::render::GLRender;
 use pf_age_ndk::ANativeActivity;
@@ -83,6 +84,8 @@ pub unsafe fn android_main_bevy(
     init_android_logger("pf_age");
     info!("⌛ register native activity callback");
 
+    global_android_native_activity = activity_raw_ptr;
+
     let mut logpipe: [RawFd; 2] = Default::default();
     libc::pipe(logpipe.as_mut_ptr());
     libc::dup2(logpipe[1], libc::STDOUT_FILENO);
@@ -111,6 +114,9 @@ pub unsafe fn android_main_bevy(
         info!("entrying");
         entry()
     });
+    while !bevy_android_plugin_inited{
+        info!("waiting bevy_android_plugin_inited")
+    }
 }
 
 pub fn init_android_logger(tag: &str) {
@@ -120,3 +126,5 @@ pub fn init_android_logger(tag: &str) {
         with_tag(tag),
     );
 }
+
+pub static mut bevy_android_plugin_inited:bool = false;

@@ -1,4 +1,6 @@
 use std::{sync::{Arc, Mutex,Condvar}, collections::VecDeque, ptr::NonNull};
+use crate::events::AndroidActivityEvent;
+use pf_age_third_party::log::{error, info};
 
 pub struct AndroidCallbackMQ {
     lock: Mutex<bool>,
@@ -7,10 +9,21 @@ pub struct AndroidCallbackMQ {
     updated:bool,
 }
 
+
+
 impl AndroidCallbackMQ {
+    pub fn new()->Self{
+        Self{
+            lock: Mutex::new(false),
+            cond: Condvar::new() ,
+            android_activity_msg_channel: VecDeque::new(),
+            updated:true,
+        }
+
+    }
     pub fn read_msg(&mut self)->Vec<AndroidActivityEvent>{
         let guard = self.lock.lock().unwrap();
-        let msgs = vec![];
+        let mut msgs = vec![];
         while !self.android_activity_msg_channel.is_empty(){
             let msg = self.android_activity_msg_channel.pop_front().expect("has checked not empty");
             msgs.push(msg);
