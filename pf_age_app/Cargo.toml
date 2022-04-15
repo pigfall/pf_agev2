@@ -8,7 +8,7 @@ edition = "2021"
 
 [dependencies]
 pf_age_third_party = {path="../pf_age_third_party"}
-fyrox={path="../../clones/Fyrox"}
+fyrox={path="../../Fyrox"}
 
 [target.'cfg(target_os="android")'.dependencies]
 pf_age_ndk = {path = "../pf_age_ndk"}

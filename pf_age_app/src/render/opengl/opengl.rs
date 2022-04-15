@@ -5,6 +5,7 @@ use pf_age_third_party::glow;
 use pf_age_third_party::log::info;
 use std::os::raw::c_void;
 use std::ptr::NonNull;
+use crate::App;
 
 pub struct GLRender {
     egl_inited: bool,
@@ -163,6 +164,9 @@ impl GLRender {
 }
 
 impl RenderTrait for GLRender {
+    fn render_frame(&mut self,app:&mut App){
+        todo!("");
+    }
     fn on_window_create(&mut self, window_ptr: *mut c_void) {
         if !self.egl_inited {
             self.init_egl();

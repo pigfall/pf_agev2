@@ -10,15 +10,15 @@ pub struct GameLooper<Render:RenderTrait>{
     cond: Condvar,
     updated: bool,
     android_activity_msg_channel: VecDeque<AndroidActivityEvent>,
-    render: Render,
+    render: Option<Render>,
     input_queue:*mut AInputQueue,
     game_ev_channel: *mut EventChannel<Event>,
     game_ev_reader: ReaderId<Event>,
-    app:App<Render>,
+    app:App,
 }
 
 impl<Render:RenderTrait> GameLooper<Render> {
-    pub fn new(app:App<Render>,render:Render)->GameLooper<Render>{
+    pub fn new(app:App,render:Option<Render>)->GameLooper<Render>{
         let mut game_ev_channel = Box::new(EventChannel::with_capacity(100));
         let mut game_ev_reader = game_ev_channel.register_reader();
         return GameLooper { 
@@ -42,7 +42,9 @@ impl<Render:RenderTrait> GameLooper<Render> {
              self.poll_input_events();
              // TODO dt time
             self.app.one_frame(1.0);
-            self.app.render(&mut self.render);
+            if let Some(render) = &mut self.render{
+                render.render_frame(&mut self.app);
+            }
             //unsafe{
             //    for ev in (*self.game_ev_channel).read(&mut self.game_ev_reader){
             //        info!("read from game ev channel {:?}",ev);
@@ -75,11 +77,14 @@ impl<Render:RenderTrait> GameLooper<Render> {
             match msg{
                 AndroidActivityEvent::WindowCreate(wrapper) =>{
                     info!("rcv msg window created");
-                    self.render.on_window_create(wrapper.window as _);
+                    if self.render.is_none(){
+                        todo!("create render");
+                    }
+                    self.render.as_mut().unwrap().on_window_create(wrapper.window as _);
                 },
                 AndroidActivityEvent::WindowDestroy=>{
                     info!("rcv msg window destroy");
-                    self.render.on_window_destroy(std::ptr::null_mut());
+                    self.render.as_mut().unwrap().on_window_destroy(std::ptr::null_mut());
                 },
                 AndroidActivityEvent::InputQueueCreated(queue)=>{
                     info!("rcv msg input queue created");
