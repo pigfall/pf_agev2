@@ -20,6 +20,3 @@ build_targets = [  "i686-linux-android" ]
 name="simple_output"
 crate-type=["cdylib"]
 
-[[example]]
-name="pf_age_bevy"
-crate-type=["cdylib"]

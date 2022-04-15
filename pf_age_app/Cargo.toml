@@ -9,4 +9,5 @@ edition = "2021"
 [dependencies]
 pf_age_third_party = {path="../pf_age_third_party"}
 pf_age_ndk = {path = "../pf_age_ndk"}
-bevy ={path="../../clones/bevy"}
+bevy ={path="../../bevy"}
+raw-window-handle = "0.4.2"

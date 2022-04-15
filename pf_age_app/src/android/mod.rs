@@ -9,3 +9,6 @@ pub mod global_android_native_activity;
 pub use global_android_native_activity::global_android_native_activity;
 pub mod android_callback_mq;
 pub use android_callback_mq::AndroidCallbackMQ;
+
+pub mod android_bevy;
+pub use android_bevy::android_main_bevy;
