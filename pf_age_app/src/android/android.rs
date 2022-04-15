@@ -75,49 +75,6 @@ pub unsafe fn android_platform_entry(
 }
 
 
-pub unsafe fn android_main_bevy(
-    activity_raw_ptr: *mut ANativeActivity,
-    saved_state: *mut c_void,
-    saved_size: usize,
-    entry: fn() ,
-) {
-    init_android_logger("pf_age");
-    info!("⌛ register native activity callback");
-
-    global_android_native_activity = activity_raw_ptr;
-
-    let mut logpipe: [RawFd; 2] = Default::default();
-    libc::pipe(logpipe.as_mut_ptr());
-    libc::dup2(logpipe[1], libc::STDOUT_FILENO);
-    libc::dup2(logpipe[1], libc::STDERR_FILENO);
-    thread::spawn(move || {
-        // let tag = CStr::from_bytes_with_nul(b"pf_age_logger\0").unwrap();
-
-        let file = File::from_raw_fd(logpipe[0]);
-        let mut reader = BufReader::new(file);
-        let mut buffer = String::new();
-        loop {
-            buffer.clear();
-            if let Ok(len) = reader.read_line(&mut buffer) {
-                if len == 0 {
-                    break;
-                } else if let Ok(msg) = CString::new(buffer.clone()) {
-                    error!("{:?}", msg);
-                    // android_logger(Level::Info, tag, &msg);
-                }
-            }
-        }
-    });
-
-    // TODO run game loop in new thread
-    thread::spawn(move || {
-        info!("entrying");
-        entry()
-    });
-    while !bevy_android_plugin_inited{
-        info!("waiting bevy_android_plugin_inited")
-    }
-}
 
 pub fn init_android_logger(tag: &str) {
     android_logger::init_once(

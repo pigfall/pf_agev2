@@ -18,7 +18,7 @@ members =[
 build_targets = ["i686-linux-android"]
 
 [dev-dependencies]
-bevy ={path="../clones/bevy"}
+bevy ={path="../bevy"}
 pf_age_app ={path="./pf_age_app"}
 pf_age_macro ={path="./pf_age_macro"}
 
