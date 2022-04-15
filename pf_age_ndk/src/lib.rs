@@ -1,3 +1,4 @@
+#[cfg(target_os="android")]
 pub use ndk_sys::{
     ANativeActivity,
     ANativeWindow, 
@@ -6,4 +7,5 @@ pub use ndk_sys::{
     AInputQueue_finishEvent,
 };
 
+#[cfg(target_os="android")]
 pub use ndk::event::InputEvent;

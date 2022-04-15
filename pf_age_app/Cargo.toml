@@ -8,4 +8,6 @@ edition = "2021"
 
 [dependencies]
 pf_age_third_party = {path="../pf_age_third_party"}
+
+[target.'cfg(target_os="android")'.dependencies]
 pf_age_ndk = {path = "../pf_age_ndk"}
