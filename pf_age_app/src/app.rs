@@ -17,6 +17,6 @@ impl App{
     }
 
     pub fn frame_advance(&mut self, dt:f64){
+        //println!(" frame_advancing");
     }
-
 }
