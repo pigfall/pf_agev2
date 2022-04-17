@@ -1,7 +1,6 @@
 use crate::android::android_game_looper::GameLooper;
 use crate::android::android_global_game_looper::game_looper;
 use crate::app::App;
-use crate::render::GLRender;
 use pf_age_ndk::ANativeActivity;
 use pf_age_third_party::android_logger;
 use pf_age_third_party::libc;

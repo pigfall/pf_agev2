@@ -8,5 +8,3 @@ mod egl;
 pub use egl::EglRenderer;
 
 pub use render::Renderer;
-#[cfg(target_os="android")]
-pub use opengl::GLRender;

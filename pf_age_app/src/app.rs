@@ -1,9 +1,11 @@
 use crate::{game_scene::Scene};
 use std::collections::HashMap;
+use pf_age_third_party::legion::{World};
 
 pub struct App {
     scenes: HashMap<String,Scene>,
     cur_scene:Scene,
+    world: World,
 }
 
 
@@ -13,6 +15,7 @@ impl App{
         return Self{
             scenes: HashMap::new(),
             cur_scene:entry_scene,
+            world: World::default(),
         }
     }
 
