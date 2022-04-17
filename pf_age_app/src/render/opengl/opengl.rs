@@ -30,6 +30,7 @@ impl EglWrapper {
             self.egl_ins.swap_buffers(self.display, surface).unwrap();
         }
     }
+
     fn attach_ctx_to_surface(&self, surface: egl::Surface) {
         info!("⌛ Attach an EGL rendering context to EGL surfaces");
         let egl_ins = &self.egl_ins;

@@ -34,7 +34,7 @@ impl GameLooper {
 
     // android_loop_run
     pub fn loop_run(&mut self){
-        let mut renderer = EglRenderer::new();
+        let mut renderer = EglRenderer::entry_load().expect("failed to load egl");
         loop{
             self.pre_handle_android_activitiy_evs(&mut renderer);
             // poll input events;
