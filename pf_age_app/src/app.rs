@@ -1,4 +1,4 @@
-use crate::{scene::Scene};
+use crate::{game_scene::Scene};
 use std::collections::HashMap;
 
 pub struct App {
