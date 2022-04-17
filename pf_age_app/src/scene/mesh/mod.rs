@@ -8,3 +8,7 @@ pub struct Mesh{
     surfaces : Vec<Surface>,
 }
 
+pub struct MeshComponent{
+
+}
+

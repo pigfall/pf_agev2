@@ -1,9 +1,12 @@
 use crate::render::Renderer;
 use std::os::raw::c_void;
 use pf_egl::{Egl14};
+use crate::app::App;
+use crate::render::opengl::{Renderer as GLRenderer};
 
 pub struct EglRenderer{
-    egl: Egl14
+    egl: Egl14,
+    gl_renderer: GLRenderer,
 }
 
 impl EglRenderer{
@@ -13,6 +16,7 @@ impl EglRenderer{
         return Ok(
                 Self{
                     egl:egl,
+                    gl_renderer: GLRenderer::entry_load(),
                 }
             );
     }
@@ -26,5 +30,9 @@ impl Renderer for EglRenderer{
      }
     fn on_window_destroy(&mut self, window_ptr: *mut c_void){
         self.egl.destroy_cur_surface().unwrap();
+    }
+
+    fn render_frame(&mut self,app:&App){
+        self.gl_renderer.render_frame(app);
     }
 }

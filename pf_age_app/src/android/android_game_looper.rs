@@ -40,7 +40,7 @@ impl GameLooper {
             // poll input events;
              self.poll_input_events();
              // TODO dt time
-            self.app.frame_advance(1.0);
+            self.app.frame_advance(1.0,&mut renderer);
         }
     }
 

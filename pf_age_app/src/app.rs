@@ -1,11 +1,12 @@
 use crate::{game_scene::Scene};
 use std::collections::HashMap;
+use crate::render::Renderer;
 use pf_age_third_party::legion::{World};
 
 pub struct App {
     scenes: HashMap<String,Scene>,
     cur_scene:Scene,
-    world: World,
+    pub world: World,
 }
 
 
@@ -19,7 +20,8 @@ impl App{
         }
     }
 
-    pub fn frame_advance(&mut self, dt:f64){
-        //println!(" frame_advancing");
+
+    pub fn frame_advance<R:Renderer>(&mut self, dt:f64,render:&mut R){
+        render.render_frame(self);
     }
 }
