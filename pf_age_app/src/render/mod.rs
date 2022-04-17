@@ -2,6 +2,11 @@
 mod render;
 mod opengl;
 
-pub use render::RenderTrait;
+#[cfg(target_os="android")]
+mod egl;
+#[cfg(target_os="android")]
+pub use egl::EglRenderer;
+
+pub use render::Renderer;
 #[cfg(target_os="android")]
 pub use opengl::GLRender;
