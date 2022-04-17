@@ -1,4 +1,4 @@
-use crate::render::RenderTrait;
+use crate::render::Renderer;
 use pf_age_ndk::ANativeWindow;
 use pf_age_third_party::egl;
 use pf_age_third_party::glow;
@@ -162,7 +162,7 @@ impl GLRender {
     }
 }
 
-impl RenderTrait for GLRender {
+impl Renderer for GLRender {
     fn on_window_create(&mut self, window_ptr: *mut c_void) {
         if !self.egl_inited {
             self.init_egl();

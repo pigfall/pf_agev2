@@ -26,7 +26,7 @@ pub unsafe fn android_platform_entry(
     activity_raw_ptr: *mut ANativeActivity,
     saved_state: *mut c_void,
     saved_size: usize,
-    build_app: fn() -> App<GLRender>,
+    build_app: fn() -> App,
 ) {
     init_android_logger("pf_age");
     info!("⌛ register native activity callback");
@@ -42,7 +42,7 @@ pub unsafe fn android_platform_entry(
     callbacks.onInputQueueCreated = Some(on_input_queue_created);
     callbacks.onInputQueueDestroyed = Some(on_input_queue_destroyed);
 
-    game_looper = Box::into_raw(Box::new(GameLooper::new(build_app(), GLRender::new())));
+    game_looper = Box::into_raw(Box::new(GameLooper::new(build_app())));
 
     let mut logpipe: [RawFd; 2] = Default::default();
     libc::pipe(logpipe.as_mut_ptr());
